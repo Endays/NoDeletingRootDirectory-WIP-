@@ -14,7 +14,7 @@ fileTypes = {
     9: '*.MP4',
     0: '*.DOCZ',   
 }
-detectedFiles = {}
+detectedFiles = []
 def targetFile():
     while True:
         for key in sorted(fileTypes):
@@ -42,7 +42,7 @@ def searchFile(selectedFile):
 
     for file_path in searchPath.rglob('*'):
      if file_path.suffix.upper() == selectedFile[1:]: 
-        print(file_path)
-        file_path
+        file_path = list(detectedFiles.append(file_path))
+        print(detectedFiles)
 
 searchFile(selectedFile)  
