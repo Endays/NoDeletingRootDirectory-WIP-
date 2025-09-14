@@ -3,7 +3,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 import datetime
  
 
-searchString = 'read choice'
+searchString = '# enter search string here'
 
 fileTypes = {
     1: '*.TXT',
