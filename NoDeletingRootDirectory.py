@@ -1,6 +1,9 @@
 from pathlib import Path
+from apscheduler.schedulers.blocking import BlockingScheduler
+import datetime
+ 
 
-searchString = ''
+searchString = 'read choice'
 
 fileTypes = {
     1: '*.TXT',
@@ -14,8 +17,7 @@ fileTypes = {
     9: '*.MP4',
     0: '*.DOCZ',   
 }
-detectedFiles = []
-def targetFile():
+def findfile():
     while True:
         for key in sorted(fileTypes):
             print(f"{key}: {fileTypes[key]}")
@@ -31,9 +33,10 @@ def targetFile():
         else:
             print("Invalid input, please enter a number from the menu.")
 
-selectedFile = targetFile()
+selectedFile = findfile()
 
 def searchFile(selectedFile):
+    detectedFiles = []
     searchPath = Path(input('Please enter path to search: '))
 
     if not searchPath.exists() or not searchPath.is_dir():
@@ -42,7 +45,26 @@ def searchFile(selectedFile):
 
     for file_path in searchPath.rglob('*'):
      if file_path.suffix.upper() == selectedFile[1:]: 
-        file_path = list(detectedFiles.append(file_path))
+        detectedFiles.append(file_path)
+    if detectedFiles:
         print(detectedFiles)
-
-searchFile(selectedFile)  
+    else:
+        print("no detected files")
+    return detectedFiles
+        
+    
+detectedFiles = searchFile(selectedFile)
+    
+def scanFile(detectedFiles, searchString):
+    for file in detectedFiles:
+     try: 
+         with open(file, 'r') as f:
+          for line_number, line in enumerate(f, 1):
+           if searchString in line:
+            print(f"{searchString} found on line {line_number}: {line.strip()} in file {file}")
+     except: 
+      print("string not found in file")
+    return
+ 
+ 
+scanFile(detectedFiles, searchString)
